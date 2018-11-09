@@ -1,0 +1,72 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta charset="utf-8">
+  <title>{% block title %}{% trans "我的商店" %}{% endblock %}</title>
+  <link href="{% static "css/base.css" %}" rel="stylesheet">
+  <style type="text/css">
+    a{
+        color: #a9cee7;
+      }
+      div#header {
+          padding:10px 100px;
+          font-size:18px;
+          overflow:auto;
+      }
+     div#subheader {
+          background-color: #ff451d;
+          font-weight:bold;
+          color: #fff;
+          padding:15px 100px;
+          margin: 0 auto;
+          display: block;
+      }
+      #header .logo {
+        font-family: 'Ubuntu', sans-serif;
+        float:left;
+        color:#1099f8;
+        font-size:22px;
+        margin-right:10%;
+      }
+      div.logo{
+        float: left;
+      }
+      div.cart{
+        float: right;
+      }
+      .subheader::after{
+        content: "";
+        display: block;
+        line-height: 0;
+        clear: both;
+      }
+  </style>
+</head>
+<body>
+  <div  id="subheader">
+    <div class="logo"><a href="/">{% trans "闽科文创产品定制平台" %}</a></div>
+    <div class="cart">
+      {% with total_items=cart|length %}
+          {% if cart|length > 0 %}
+            {% trans "你的购物车" %}:
+            <a href="{% url "cart:cart_detail" %}" style="color: black;">
+              {% blocktrans with total_items_plural=total_items|pluralize  total_price=cart.get_total_price %}
+                {{ total_items }} 件,
+                ${{ total_price }}
+              {% endblocktrans %}
+            </a>
+          {% else %}
+            {% trans "你的购物车是空的." %}
+          {% endif %}
+        {% endwith %}
+    </div>
+  </div>
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>

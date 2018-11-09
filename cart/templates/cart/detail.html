@@ -1,0 +1,96 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "你的购物车" %}
+{% endblock %}
+{% block content %}
+  <h3>{% trans "你的购物车" %}</h3>
+  <div>
+    
+  </div>
+  <table class="cart">
+    <thead>
+      <tr>
+        <th>{% trans "图片" %}</th>
+        <th>{% trans "产品" %}</th>
+        <th>{% trans "数量" %}</th>
+        <th>{% trans "移除" %}</th>
+        <th>{% trans "单价" %}</th>
+        <th>{% trans "价格" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr>
+            <td><a href="{{ product.get_absolute_url }}">
+      <img class="product_img" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" style="width: 100px; height: 100px;">
+    </a></td>
+            <td>{{ product.name }}</td>
+            <td>
+              <form action="{% url "cart:cart_add" product.id %}" method="post">
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.update }}
+                <input type="submit" value="更新">
+                {% csrf_token %}
+              </form>
+            </td>
+            <td><a href="{% url "cart:cart_remove" product.id %}">{% trans "移除" %}</a></td>
+            <td class="num">${{ item.price }}</td>
+            <td class="num">${{ item.total_price }}</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+      {% if cart.coupon %}
+        <tr class="subtotal">
+          <td>{% trans "小计" %}</td>
+          <td colspan="4"></td>
+          <td class="num">${{ cart.get_total_price|floatformat:"2" }}</td>
+        </tr>
+        <tr>
+          {% blocktrans with code=cart.coupon.code discount=cart.coupon.discount %}
+              <td>"{{ code }}" 券 ({{ discount }}% off)</td>
+          {% endblocktrans %}
+          <td colspan="4"></td>
+          <td class="num neg">
+            - ${{ cart.get_discount|floatformat:"2" }}
+          </td>
+        </tr>
+      {% endif %}
+      <tr class="total">
+        <td>{% trans "总价格" %}</td>
+        <td colspan="4"></td>
+        <td class="num">
+          ${{ cart.get_total_price_after_discount|floatformat:"2" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% if recommended_products %}
+    <div class="recommendations cart">
+      <h3>{% trans "买这个的人也买了" %}</h3>
+      {% for p in recommended_products %}
+        <div class="item">
+          <a href="{{ p.get_absolute_url }}">
+            <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+          </a>
+          <p><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <p>{% trans "使用券" %}:</p>
+  <form action="{% url "coupons:apply" %}" method="post">
+    {{ coupon_apply_form }}
+    <input type="submit" value="{% trans "使用" %}">
+    {% csrf_token %}
+  </form>
+  <p class="text-right">
+    <a href="{% url "shop:product_list" %}" class="button light">{% trans "继续购物" %}</a>
+    <a href="{% url "orders:order_create" %}" class="button">
+      {% trans "结算" %}
+    </a>
+  </p>
+{% endblock %}

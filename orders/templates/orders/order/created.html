@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "非常感谢" %}
+{% endblock %}
+
+{% block content %}
+  <h1>{% trans "非常感谢" %}</h1>
+  {% blocktrans with order_id=order.id %}
+    <p>您的订单已经成功完成. 订单号: <strong>{{ order_id }}</strong>.</p>
+  {% endblocktrans %}
+{% endblock %}
