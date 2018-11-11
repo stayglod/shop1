@@ -83,10 +83,22 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myshop_db',
+        'USER': 'root',
+        'PORT': 3306,
+        'PASSWORD': '12345678BBC!@#QWtC',
+        'HOST': '127.0.0.1',
     }
 }
 
@@ -128,7 +140,7 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale/'),
 )
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -186,4 +198,3 @@ PARLER_LANGUAGES = {
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 1
-
