@@ -55,7 +55,7 @@
             <a href="{% url "cart:cart_detail" %}" style="color: black;">
               {% blocktrans with total_items_plural=total_items|pluralize  total_price=cart.get_total_price %}
                 {{ total_items }} 件,
-                ${{ total_price }}
+                RMB:{{ total_price }}
               {% endblocktrans %}
             </a>
           {% else %}
