@@ -4,7 +4,7 @@ from orders.models import Order
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
-import weasyprint
+#import weasyprint
 from io import BytesIO
 
 def payment_process(request):
