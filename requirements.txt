@@ -46,7 +46,7 @@ requests==2.19.1
 six==1.11.0
 tinycss2==0.6.1
 tornado==5.1.1
-urllib3==1.23
+urllib3==1.26.5
 vine==1.1.4
 WeasyPrint==0.42.3
 webeditor==0.7.0
